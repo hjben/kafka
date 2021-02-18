@@ -13,14 +13,15 @@ RUN tar -xvf scala-$SCALA_VERSION.$SCALA_SUB_VERSION.tgz -C /usr/local && \
     rm -f scala-$SCALA_VERSION.$SCALA_SUB_VERSION.tgz
 RUN ln -s /usr/local/scala-$SCALA_VERSION.$SCALA_SUB_VERSION $SCALA_HOME
 
-RUN wget https://downloads.apache.org/kafka/$KAFKA_VERSION/kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz
+RUN wget https://archive.apache.org/dist/kafka/$KAFKA_VERSION/kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz
 RUN tar -xvf kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz -C /usr/local && \
     rm -f kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz
-RUN ln -s /usr/local/kafka_2.13-2.7.0/ $KAFKA_HOME  
+RUN ln -s /usr/local/kafka_$SCALA_VERSION-$KAFKA_VERSION/ $KAFKA_HOME  
 
 ADD server.properties $KAFKA_HOME/config/server.properties
 ADD start-kafka.sh /
 
 EXPOSE 9092-9099
+EXPOSE 9999
 
 ENTRYPOINT ["/usr/sbin/init"]
