@@ -1,4 +1,25 @@
 services:
+  cmak:
+    image: hjben/cmak:3.0.0.5
+    hostname: cmak
+    container_name: cmak
+    privileged: true
+    ports:
+      - 9000:9000
+    environment:
+      ZK_HOSTS: 10.0.2.1:2181,10.0.2.1:2182,10.0.2.1:2183
+      APPLICATION_SECRET: "random-secret"
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    networks:
+      kafka-cluster:
+        ipv4_address: 10.0.3.2
+    extra_hosts:
+      - "cmak:10.0.3.2"
+      - "kafka1:10.0.3.3"
+      - "kafka2:10.0.3.4"
+      - "kafka3:10.0.3.5"
+
   kafka1:
     image: hjben/kafka:2.7.0
     hostname: kafka1
@@ -10,17 +31,19 @@ services:
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka1:9092,EXTERNAL://127.0.0.1:9093
       KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:9093
       KAFKA_ZOOKEEPER_CONNECT: 10.0.2.1:2181,10.0.2.1:2182,10.0.2.1:2183/kafka
+      JMX_PORT: 9999
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
       - /tmp/kafka/logs/kafka1:/usr/local/kafka/logs
       - /tmp/kafka/data:/kafka
     networks:
       kafka-cluster:
-        ipv4_address: 10.0.3.2
+        ipv4_address: 10.0.3.3
     extra_hosts:
-      - "kafka1:10.0.3.2"
-      - "kafka2:10.0.3.3"
-      - "kafka3:10.0.3.4"
+      - "cmak:10.0.3.2"
+      - "kafka1:10.0.3.3"
+      - "kafka2:10.0.3.4"
+      - "kafka3:10.0.3.5"
   kafka2:
     image: hjben/kafka:2.7.0
     hostname: kafka2
@@ -32,17 +55,19 @@ services:
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka2:9092,EXTERNAL://127.0.0.1:9094
       KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:9094
       KAFKA_ZOOKEEPER_CONNECT: 10.0.2.1:2181,10.0.2.1:2182,10.0.2.1:2183/kafka
+      JMX_PORT: 9999
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
       - /tmp/kafka/logs/kafka2:/usr/local/kafka/logs
       - /tmp/kafka/data:/kafka
     networks:
       kafka-cluster:
-        ipv4_address: 10.0.3.3
+        ipv4_address: 10.0.3.4
     extra_hosts:
-      - "kafka1:10.0.3.2"
-      - "kafka2:10.0.3.3"
-      - "kafka3:10.0.3.4"
+      - "cmak:10.0.3.2"
+      - "kafka1:10.0.3.3"
+      - "kafka2:10.0.3.4"
+      - "kafka3:10.0.3.5"
   kafka3:
     image: hjben/kafka:2.7.0
     hostname: kafka3
@@ -54,17 +79,19 @@ services:
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka3:9092,EXTERNAL://127.0.0.1:9095
       KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:9095
       KAFKA_ZOOKEEPER_CONNECT: 10.0.2.1:2181,10.0.2.1:2182,10.0.2.1:2183/kafka
+      JMX_PORT: 9999
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
       - /tmp/kafka/logs/kafka3:/usr/local/kafka/logs
       - /tmp/kafka/data:/kafka
     networks:
       kafka-cluster:
-        ipv4_address: 10.0.3.4
+        ipv4_address: 10.0.3.5
     extra_hosts:
-      - "kafka1:10.0.3.2"
-      - "kafka2:10.0.3.3"
-      - "kafka3:10.0.3.4"
+      - "cmak:10.0.3.2"
+      - "kafka1:10.0.3.3"
+      - "kafka2:10.0.3.4"
+      - "kafka3:10.0.3.5"
 
 networks:
  kafka-cluster:
