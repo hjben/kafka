@@ -1,4 +1,23 @@
 services:
+  jupyter-lab:
+    image: hjben/jupyter-lab:latest
+    hostname: jupyter-lab
+    container_name: jupyter-lab
+    privileged: true
+    ports:
+      - 8888:8888
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - /Users/a10053/workspace/docker/kafka-notebook:/root/workspace
+    networks:
+      kafka-cluster:
+        ipv4_address: 10.0.3.2
+    extra_hosts:
+      - "jupyter-lab:10.0.3.2"
+      - "cmak:10.0.3.3"
+      - "kafka1:10.0.3.4"
+      - "kafka2:10.0.3.5"
+      - "kafka3:10.0.3.6"
   cmak:
     image: hjben/cmak:3.0.0.5
     hostname: cmak
@@ -13,12 +32,13 @@ services:
       - /sys/fs/cgroup:/sys/fs/cgroup
     networks:
       kafka-cluster:
-        ipv4_address: 10.0.3.2
+        ipv4_address: 10.0.3.3
     extra_hosts:
-      - "cmak:10.0.3.2"
-      - "kafka1:10.0.3.3"
-      - "kafka2:10.0.3.4"
-      - "kafka3:10.0.3.5"
+      - "jupyter-lab:10.0.3.2"
+      - "cmak:10.0.3.3"
+      - "kafka1:10.0.3.4"
+      - "kafka2:10.0.3.5"
+      - "kafka3:10.0.3.6"
 
   kafka1:
     image: hjben/kafka:2.7.0
@@ -38,12 +58,13 @@ services:
       - /tmp/kafka/data:/kafka
     networks:
       kafka-cluster:
-        ipv4_address: 10.0.3.3
+        ipv4_address: 10.0.3.4
     extra_hosts:
-      - "cmak:10.0.3.2"
-      - "kafka1:10.0.3.3"
-      - "kafka2:10.0.3.4"
-      - "kafka3:10.0.3.5"
+      - "jupyter-lab:10.0.3.2"
+      - "cmak:10.0.3.3"
+      - "kafka1:10.0.3.4"
+      - "kafka2:10.0.3.5"
+      - "kafka3:10.0.3.6"
   kafka2:
     image: hjben/kafka:2.7.0
     hostname: kafka2
@@ -62,12 +83,13 @@ services:
       - /tmp/kafka/data:/kafka
     networks:
       kafka-cluster:
-        ipv4_address: 10.0.3.4
+        ipv4_address: 10.0.3.5
     extra_hosts:
-      - "cmak:10.0.3.2"
-      - "kafka1:10.0.3.3"
-      - "kafka2:10.0.3.4"
-      - "kafka3:10.0.3.5"
+      - "jupyter-lab:10.0.3.2"
+      - "cmak:10.0.3.3"
+      - "kafka1:10.0.3.4"
+      - "kafka2:10.0.3.5"
+      - "kafka3:10.0.3.6"
   kafka3:
     image: hjben/kafka:2.7.0
     hostname: kafka3
@@ -86,12 +108,13 @@ services:
       - /tmp/kafka/data:/kafka
     networks:
       kafka-cluster:
-        ipv4_address: 10.0.3.5
+        ipv4_address: 10.0.3.6
     extra_hosts:
-      - "cmak:10.0.3.2"
-      - "kafka1:10.0.3.3"
-      - "kafka2:10.0.3.4"
-      - "kafka3:10.0.3.5"
+      - "jupyter-lab:10.0.3.2"
+      - "cmak:10.0.3.3"
+      - "kafka1:10.0.3.4"
+      - "kafka2:10.0.3.5"
+      - "kafka3:10.0.3.6"
 
 networks:
  kafka-cluster:
