@@ -20,6 +20,7 @@ RUN ln -s /usr/local/kafka_$SCALA_VERSION-$KAFKA_VERSION/ $KAFKA_HOME
 
 ADD server.properties $KAFKA_HOME/config/server.properties
 ADD start-kafka.sh /
+RUN chmod 755 start-kafka.sh
 
 EXPOSE 9092-9099
 EXPOSE 9999
